@@ -1,14 +1,16 @@
 <?php
 require 'vendor/autoload.php';
- 
+require 'config.php';
+
 //instancie o objeto
 $app = new \Slim\Slim(array(
 	'templates.path' => 'views'
 ));
  
 //defina a rota
-$app->get('/', function () { 
-	echo "Hello, Jão!"; 
+$app->get('/', function () {
+	global $config;
+	echo 'Hello '.$config['appname'].'!';
 });
 
 $app->group('/cards', function() use ($app){
