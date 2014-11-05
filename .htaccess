@@ -1,3 +1,4 @@
+# remove index.php da url
 RewriteEngine On
 RewriteBase /bs/
 RewriteRule ^index\.php$ - [L]

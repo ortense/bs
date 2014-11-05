@@ -8,18 +8,18 @@ $app = new \Slim\Slim(array(
  
 //defina a rota
 $app->get('/', function () { 
-	echo "Hello, World!"; 
+	echo "Hello, Jão!"; 
 });
 
 $app->group('/cards', function() use ($app){
-	//rota para a home
+	
 	$app->get('/',function() use ($app){
 
 		echo "cards/home";
 		
 	});
 	
-	$app->get('/:colecao', function($colecao) use ($app){
+	$app->get('/:colecao', function($colecao) use($app) {
 
 		$data = array(
 			'name'=> $colecao
@@ -38,6 +38,23 @@ $app->group('/cards', function() use ($app){
 		$app->render('card_detail.php', $data, 200);
 	});
 });
+
+$app->get('/busca', function () use ($app) { 
+	
+	if ( isset($_GET['q']) ) {
+		$termo = $_GET['q'];
+	}
+	else{
+		$termo = 'busca vazia';
+	}
+	
+	$data = array(
+		'termo'=> $termo
+	);
+
+	$app->render('search_result.php', $data, 200);
+});
+
 
 //rode a aplicação Slim 
 $app->run();
