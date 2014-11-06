@@ -8,8 +8,22 @@ $app = new \Slim\Slim(array(
 ));
  
 //defina a rota
-$app->get('/', function () {
+$app->get('/', function () use ($app) {
 	global $config;
+
+	require 'lib/db_connect.php';
+		$db = db_connect($config);
+		$result = $db->query( 'SELECT * FROM colecoes;' );
+		while ( $row = $result->fetch_array(MYSQLI_ASSOC) ) {
+			$data[] = $row;
+		}
+
+		$app->render('card_list.php', array(
+				'name' => 'db_teste',
+				'rows' => var_dump($data)
+			)
+		);
+
 	echo 'Hello '.$config['appname'].'!';
 });
 

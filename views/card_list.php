@@ -6,5 +6,7 @@
 </head>
 <body>
 	<h1>lista/colação: <?php echo $name ?></h1>
+	<h1><?php echo $rows ?></h1>
+
 </body>
 </html>
