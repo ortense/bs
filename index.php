@@ -1,6 +1,7 @@
 <?php
 require 'vendor/autoload.php';
 require 'config.php';
+require 'lib/db_connect.php';
 
 //instancie o objeto
 $app = new \Slim\Slim(array(
@@ -11,19 +12,6 @@ $app = new \Slim\Slim(array(
 $app->get('/', function () use ($app) {
 	global $config;
 
-	require 'lib/db_connect.php';
-		$db = db_connect($config);
-		$result = $db->query( 'SELECT * FROM colecoes;' );
-		while ( $row = $result->fetch_array(MYSQLI_ASSOC) ) {
-			$data[] = $row;
-		}
-
-		$app->render('card_list.php', array(
-				'name' => 'db_teste',
-				'rows' => var_dump($data)
-			)
-		);
-
 	echo 'Hello '.$config['appname'].'!';
 });
 
@@ -31,17 +19,25 @@ $app->group('/cards', function() use ($app){
 	
 	$app->get('/',function() use ($app){
 
-		echo "cards/home";
+		global $config;
+		
+		$db = db_connect($config);
+		$result = $db->query( "SELECT * FROM colecao" );
+		while ( $row = $result->fetch_array(MYSQLI_ASSOC) ) {
+			$data[] = $row;
+		}
+
+		$app->render('card_list.php', array(
+				'title' => 'Coleções',
+				'name' => 'Coleções',
+				'data' => $data
+			)
+		);
 		
 	});
 	
 	$app->get('/:colecao', function($colecao) use($app) {
-
-		$data = array(
-			'name'=> $colecao
-		);
-
-		$app->render('card_list.php', $data, 200);
+		
 	});
 
 	$app->get('/:colecao/:card', function($colecao, $card) use ($app){
