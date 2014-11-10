@@ -22,22 +22,30 @@ $app->group('/cards', function() use ($app){
 		global $config;
 		
 		$db = db_connect($config);
-		$result = $db->query( "SELECT * FROM colecao" );
+		$result = $db->query( "SELECT * FROM colecoes" );
 		while ( $row = $result->fetch_array(MYSQLI_ASSOC) ) {
 			$data[] = $row;
 		}
+        
+        $model = array(
+            'title' => 'Coleções',
+            'name' => 'Coleções',
+            'data' => $data
+        );
 
-		$app->render('card_list.php', array(
-				'title' => 'Coleções',
-				'name' => 'Coleções',
-				'data' => $data
-			)
-		);
+		$app->render('card_home.php', $model);
 		
 	});
 	
 	$app->get('/:colecao', function($colecao) use($app) {
-		
+		$colecao = strtoupper($colecao);
+        
+        $model = array(
+            'title' => 'Todos os cards de '.$colecao,
+            'colecao'=>$colecao
+        );
+        
+        $app->render('card_list.php', $model);
 	});
 
 	$app->get('/:colecao/:card', function($colecao, $card) use ($app){

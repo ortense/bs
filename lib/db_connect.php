@@ -7,6 +7,8 @@ function db_connect($config) {
 		$config['db']['password'],
 		$config['db']['database']
 	);
-
-	return $connection;
+    
+    $connection->set_charset("utf8");
+	
+    return $connection;
 }
